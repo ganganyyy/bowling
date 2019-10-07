@@ -2,4 +2,4 @@
 bowling training
 
 package structure:
-  training.bowling.impl.[username]
+  training.adv.bowling.impl.[username]
