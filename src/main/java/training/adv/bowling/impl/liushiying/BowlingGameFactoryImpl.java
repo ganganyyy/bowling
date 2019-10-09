@@ -22,7 +22,7 @@ public class BowlingGameFactoryImpl implements BowlingGameFactory{
 	public BowlingGame getGame() {
 		//TODO:改成可扩展性
 		
-		BowlingGameImpl bowlingGameImpl=new BowlingGameImpl(new BowlingRuleImpl(index),index);
+		BowlingGameImpl bowlingGameImpl=new BowlingGameImpl(BowlingRuleImpl.getInstance(),index);
 		index++;
 		return bowlingGameImpl;
 	}

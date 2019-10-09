@@ -1,12 +1,6 @@
 package training.adv.bowling.impl.liushiying;
 
-import training.adv.bowling.api.BowlingGame;
-import training.adv.bowling.api.BowlingRule;
-import training.adv.bowling.api.BowlingTurn;
-import training.adv.bowling.api.BowlingTurnEntity;
-import training.adv.bowling.api.GameEntity;
-import training.adv.bowling.api.Turn;
-import training.adv.bowling.api.TurnEntity;
+import training.adv.bowling.api.*;
 import training.adv.bowling.impl.AbstractGame;
 
 public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> implements BowlingGame {
@@ -43,7 +37,7 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 			}
 		}else{
 			for(int i=0;i<rule.getMaxTurn();i++){
-				//System.out.println(scores[i]);
+				System.out.println("分数："+scores[i]);
 				sum+=scores[i];
 			}
 		}
@@ -69,12 +63,13 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 			return getScores();
 		}
 		bowlingTurns=rule.addScores(bowlingTurns, pins);
-		System.out.print("当前游戏为："+id);
-		//System.out.println("列数："+bowlingTurns.length);
-		/*for(BowlingTurn turn:bowlingTurns){
+		/*System.out.print("当前游戏为："+id);
+		System.out.println("列数："+bowlingTurns.length);
+		for(BowlingTurn turn:bowlingTurns){
 			System.out.println(turn.getFirstPin()+" : "+turn.getSecondPin());
 		}*/
-		
+
+
 		return getScores();
 		
 		
@@ -86,7 +81,12 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 		BowlingTurnEntity[] turnEntities=new BowlingTurnEntityImpl[bowlingTurns.length];
 		bowlingGameEntityImpl.setId(id);
 		for(int i=0;i<bowlingTurns.length;i++){
-			turnEntities[i]=bowlingTurns[i].getEntity();
+			Integer first=bowlingTurns[i].getFirstPin();
+			Integer second=bowlingTurns[i].getSecondPin();
+			turnEntities[i]=new BowlingTurnEntityImpl();
+			turnEntities[i].setFirstPin(first);
+			turnEntities[i].setSecondPin(second);
+			turnEntities[i].setId(new TurnKeyImpl(i,id));
 		}
 		bowlingGameEntityImpl.setTurnEntities(turnEntities);
 		return bowlingGameEntityImpl;
