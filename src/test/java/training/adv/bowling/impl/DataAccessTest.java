@@ -36,7 +36,7 @@ public class DataAccessTest {
 	
 	private BowlingService bowlingService = new BowlingServiceImpl();
 	private BowlingGameFactory factory = BowlingGameFactoryImpl.getInstance();
-	private Connection conn;
+	private Connection conn=DBUtil.getConnection();
 
 	@Before
 	public void before() {
@@ -44,7 +44,9 @@ public class DataAccessTest {
 		System.out.println(path);
 		try (Connection conn = DBUtil.getConnection();
 				FileReader fr = new FileReader(new File(path))) {
+			conn.setAutoCommit(true);
 			RunScript.execute(conn, fr);
+			System.out.println("enter");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,6 +60,7 @@ public class DataAccessTest {
 		System.out.println(path);
 		try (Connection conn = DBUtil.getConnection();
 			 FileReader fr = new FileReader(new File(path))) {
+			conn.setAutoCommit(true);
 			RunScript.execute(conn, fr);
 		} catch (Exception e) {
 			e.printStackTrace();
