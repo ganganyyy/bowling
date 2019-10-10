@@ -69,7 +69,9 @@ public class DataAccessTest {
 	@Test
 	public void testSave() {
 		BowlingGame game = factory.getGame();
-		game.addScores(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+		game.addScores(10, 10, 10, 10, 10, 10, 10, 10);
+		bowlingService.save(game);
+		game.addScores(5,5,5);
 		bowlingService.save(game);
 		GameEntity result = query(game.getEntity().getId());
 		assertEquals(game.getEntity().getId(), result.getId());
@@ -92,8 +94,8 @@ public class DataAccessTest {
 		
 		assertEquals(Integer.valueOf(1001), entity.getId());
 		assertEquals(Integer.valueOf(10), entity.getMaxTurn());
-		assertEquals(12, game.getTurns().length);
-		assertEquals(Integer.valueOf(300), game.getTotalScore());
+		assertEquals(10, game.getTurns().length);
+		assertEquals(Integer.valueOf(245), game.getTotalScore());
 	}
 	
 	//Prepared data in db.
@@ -141,7 +143,12 @@ public class DataAccessTest {
 				TurnKey turnKey=new TurnKeyImpl(rs.getInt("turn_id"),rs.getInt("game_id"));
 				bowlingTurnEntity.setId(turnKey);
 				bowlingTurnEntity.setFirstPin(rs.getInt("firstpin"));
-				bowlingTurnEntity.setSecondPin(rs.getInt("secondpin"));
+				String secondPin=rs.getString("secondpin");
+				if(secondPin==null||secondPin.equals("null")){
+					bowlingTurnEntity.setSecondPin(null);
+				}else {
+					bowlingTurnEntity.setSecondPin(rs.getInt("secondpin"));
+				}
 
 			}
 		}catch (Exception e){

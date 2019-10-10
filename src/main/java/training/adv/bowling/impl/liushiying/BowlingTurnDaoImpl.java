@@ -41,6 +41,10 @@ public class BowlingTurnDaoImpl extends AbstractBatchDao implements BowlingTurnD
 
     @Override
     protected void doSave(BowlingTurnEntity entity) {
+        //如果相等就不加
+        if(doLoad(entity.getId())!=null){
+            return;
+        }
         String sql="insert into turns_table(turn_id,firstpin,secondpin,game_id)" +
                 "values(?,?,?,?)";
         try {
