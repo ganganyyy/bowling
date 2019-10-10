@@ -64,6 +64,11 @@ public class DataAccessTest {
 			e.printStackTrace();
 			System.out.println("删表失败");
 		}*/
+		try{
+			conn.close();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
