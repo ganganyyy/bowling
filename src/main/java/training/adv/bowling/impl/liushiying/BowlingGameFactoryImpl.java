@@ -8,7 +8,7 @@ import training.adv.bowling.api.BowlingGameFactory;
 public class BowlingGameFactoryImpl implements BowlingGameFactory{
 
 	private static BowlingGameFactoryImpl factory=new BowlingGameFactoryImpl();
-	private Integer index=0;
+	private Integer index=1001;
 	
 	private BowlingGameFactoryImpl(){
 		

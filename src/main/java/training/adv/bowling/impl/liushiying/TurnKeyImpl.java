@@ -20,5 +20,20 @@ public class TurnKeyImpl implements TurnKey{
 	public Integer getForeignId() {
 		return foreignId;
 	}
+	@Override
+	public boolean equals(Object anObject){
+		if (this == anObject) {
+			return true;
+		}
+		if (anObject instanceof TurnKey) {
+			TurnKey anotherObject= (TurnKey)anObject;
+			int id=anotherObject.getId();
+			int foreignId=anotherObject.getForeignId();
+			if(id==this.getId()&&foreignId==this.getForeignId()){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

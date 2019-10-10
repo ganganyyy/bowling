@@ -9,19 +9,29 @@ public class BowlingTurnImpl implements BowlingTurn {
 	private Integer first;
 	private Integer second;
 //	private TurnKey turnKey;
-	private BowlingTurnEntity entity=new BowlingTurnEntityImpl();
+	private BowlingTurnEntity entity;
 
-	
+	public BowlingTurnImpl(){
+
+	}
+
+	public BowlingTurnImpl(BowlingTurnEntity turnEntity){
+		this.entity=turnEntity;
+	}
 	public BowlingTurnImpl(Integer first) {
 		this(first,null);
 	}
 	
 	public BowlingTurnImpl(Integer first,Integer second) {
-		this.first=first;
-		this.second=second;
+		this(first,second,null);
 	
 	}
-	
+
+	public BowlingTurnImpl(Integer first,Integer second,BowlingTurnEntity turnEntity){
+		this.first=first;
+		this.second=second;
+		this.entity=turnEntity;
+	}
 	@Override
 	public BowlingTurnEntity getEntity() {
 		return entity;

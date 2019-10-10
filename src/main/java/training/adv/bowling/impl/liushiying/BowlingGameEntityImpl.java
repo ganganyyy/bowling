@@ -7,7 +7,11 @@ public class BowlingGameEntityImpl implements GameEntity {
 
 	private Integer id;
 	private TurnEntity[] turns;
-	
+	private Integer maxTurn;
+
+	public BowlingGameEntityImpl(Integer maxTurn){
+		this.maxTurn=maxTurn;
+	}
 	
 	@Override
 	public Integer getId() {
@@ -16,7 +20,7 @@ public class BowlingGameEntityImpl implements GameEntity {
 
 	@Override
 	public void setId(Integer id) {
-		this.setId(id);
+		this.id=id;
 	}
 
 	@Override
@@ -31,7 +35,7 @@ public class BowlingGameEntityImpl implements GameEntity {
 
 	@Override
 	public Integer getMaxTurn() {
-		return 10;
+		return maxTurn;
 	}
 
 }

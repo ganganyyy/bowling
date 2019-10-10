@@ -6,7 +6,7 @@ import training.adv.bowling.impl.AbstractGame;
 public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> implements BowlingGame {
 
 	private Integer id;
-	
+	private GameEntity bowlingGameEntity;
 	private BowlingTurn[] bowlingTurns;
 
 
@@ -14,13 +14,22 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 		super(rule);
 		this.rule=rule;
 	}
-	
 	public BowlingGameImpl(BowlingRule rule,Integer id) {
 		super(rule);
 		this.id=id;
 		this.rule=rule;
+
+	}
+
+	public BowlingGameImpl(BowlingRule rule,Integer id,GameEntity bowlingGameEntity) {
+		super(rule);
+		this.id=id;
+		this.rule=rule;
+		this.bowlingGameEntity=bowlingGameEntity;
 		
 	}
+
+
 	
 	
 	@Override
@@ -54,6 +63,15 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 	//回合对象
 	@Override
 	public BowlingTurn[] getTurns() {
+		BowlingTurnEntity[] turnEntity= (BowlingTurnEntity[]) this.getEntity().getTurnEntities();
+		bowlingTurns=new BowlingTurn[turnEntity.length];
+		for(int i=0;i<turnEntity.length;i++){
+			TurnKey turnKey=turnEntity[i].getId();
+			Integer first=turnEntity[i].getFirstPin();
+			Integer second=turnEntity[i].getSecondPin();
+			bowlingTurns[i]=new BowlingTurnImpl(first,second,turnEntity[i]);
+
+		}
 		return bowlingTurns;
 	}
 
@@ -68,18 +86,10 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 		for(BowlingTurn turn:bowlingTurns){
 			System.out.println(turn.getFirstPin()+" : "+turn.getSecondPin());
 		}*/
-
-
-		return getScores();
-		
-		
-	}
-
-	@Override
-	public GameEntity getEntity() {
-		BowlingGameEntityImpl bowlingGameEntityImpl=new BowlingGameEntityImpl();
+		bowlingGameEntity=new BowlingGameEntityImpl(rule.getMaxTurn());
 		BowlingTurnEntity[] turnEntities=new BowlingTurnEntityImpl[bowlingTurns.length];
-		bowlingGameEntityImpl.setId(id);
+
+		bowlingGameEntity.setId(id);
 		for(int i=0;i<bowlingTurns.length;i++){
 			Integer first=bowlingTurns[i].getFirstPin();
 			Integer second=bowlingTurns[i].getSecondPin();
@@ -87,9 +97,16 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 			turnEntities[i].setFirstPin(first);
 			turnEntities[i].setSecondPin(second);
 			turnEntities[i].setId(new TurnKeyImpl(i,id));
+			bowlingTurns[i]=new BowlingTurnImpl(turnEntities[i]);
 		}
-		bowlingGameEntityImpl.setTurnEntities(turnEntities);
-		return bowlingGameEntityImpl;
+		bowlingGameEntity.setTurnEntities(turnEntities);
+		return getScores();
+
+	}
+
+	@Override
+	public GameEntity getEntity() {
+		return bowlingGameEntity;
 	}
 
 }
