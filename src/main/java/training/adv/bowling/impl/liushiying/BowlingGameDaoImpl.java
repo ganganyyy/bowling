@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class BowlingGameDaoImpl extends AbstractDao<GameEntity, BowlingGame,Integer> implements BowlingGameDao {
+public class BowlingGameDaoImpl extends AbstractDao<BowlingGameEntity, BowlingGame,Integer> implements BowlingGameDao {
 
 
     private static Connection conn;
@@ -18,7 +18,7 @@ public class BowlingGameDaoImpl extends AbstractDao<GameEntity, BowlingGame,Inte
 
     //保存游戏
     @Override
-    protected void doSave(GameEntity entity) {
+    protected void doSave(BowlingGameEntity entity) {
         if(null!=doLoad(entity.getId())){
             return;
         }
@@ -34,7 +34,7 @@ public class BowlingGameDaoImpl extends AbstractDao<GameEntity, BowlingGame,Inte
     }
 
     @Override
-    protected GameEntity doLoad(Integer id) {
+    protected BowlingGameEntity doLoad(Integer id) {
         String sql="select * from game_table where game_id=?";
         BowlingGameEntityImpl bowlingGameEntity=null;
         try{
@@ -52,7 +52,7 @@ public class BowlingGameDaoImpl extends AbstractDao<GameEntity, BowlingGame,Inte
     }
 
     @Override
-    protected BowlingGame doBuildDomain(GameEntity entity) {
+    protected BowlingGame doBuildDomain(BowlingGameEntity entity) {
         String sql="select * from game_table where game_id=?";
         BowlingGame bowlingGame=null;
         if(entity==null){

@@ -1,15 +1,20 @@
 package training.adv.bowling.impl.liushiying;
 
-import training.adv.bowling.api.GameEntity;
-import training.adv.bowling.api.TurnEntity;
+import training.adv.bowling.api.*;
 
-public class BowlingGameEntityImpl implements GameEntity {
+public class BowlingGameEntityImpl implements BowlingGameEntity {
 
 	private Integer id;
-	private TurnEntity[] turns;
+	private BowlingTurnEntity[] turns;
 	private Integer maxTurn;
+	private Integer maxPin;
 
 	public BowlingGameEntityImpl(Integer maxTurn){
+		this.maxTurn=maxTurn;
+	}
+
+	public BowlingGameEntityImpl(Integer maxTurn,Integer maxPin){
+		this.maxPin=maxPin;
 		this.maxTurn=maxTurn;
 	}
 	
@@ -24,12 +29,12 @@ public class BowlingGameEntityImpl implements GameEntity {
 	}
 
 	@Override
-	public void setTurnEntities(TurnEntity[] turns) {
+	public void setTurnEntities(BowlingTurnEntity[] turns) {
 		this.turns=turns;
 	}
 
 	@Override
-	public TurnEntity[] getTurnEntities() {
+	public BowlingTurnEntity[] getTurnEntities() {
 		return turns;
 	}
 
@@ -38,4 +43,8 @@ public class BowlingGameEntityImpl implements GameEntity {
 		return maxTurn;
 	}
 
+	@Override
+	public Integer getMaxPin() {
+		return maxPin;
+	}
 }

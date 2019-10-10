@@ -3,10 +3,10 @@ package training.adv.bowling.impl.liushiying;
 import training.adv.bowling.api.*;
 import training.adv.bowling.impl.AbstractGame;
 
-public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> implements BowlingGame {
+public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule,BowlingGameEntity> implements BowlingGame {
 
 	private Integer id;
-	private GameEntity bowlingGameEntity;
+	private BowlingGameEntity bowlingGameEntity;
 	private BowlingTurn[] bowlingTurns;
 
 
@@ -21,7 +21,7 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 
 	}
 
-	public BowlingGameImpl(BowlingRule rule,Integer id,GameEntity bowlingGameEntity) {
+	public BowlingGameImpl(BowlingRule rule,Integer id,BowlingGameEntity bowlingGameEntity) {
 		super(rule);
 		this.id=id;
 		this.rule=rule;
@@ -105,7 +105,7 @@ public class BowlingGameImpl extends AbstractGame<BowlingTurn,BowlingRule> imple
 	}
 
 	@Override
-	public GameEntity getEntity() {
+	public BowlingGameEntity getEntity() {
 		return bowlingGameEntity;
 	}
 
