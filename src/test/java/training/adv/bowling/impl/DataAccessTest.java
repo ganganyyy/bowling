@@ -3,6 +3,7 @@ package training.adv.bowling.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.h2.tools.RunScript;
 import org.h2.command.Prepared;
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +26,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.sql.Connection;
+
 
 public class DataAccessTest {
 	
@@ -34,39 +40,26 @@ public class DataAccessTest {
 
 	@Before
 	public void before() {
-		conn=DBUtil.getConnection();
-		/*//建表
-		String sql1="create table game_table(game_id int primary key not null,maxTurn int not null);";
-		String sql2="create table turns_table(id int primary key auto_increment,turn_id int not null,firstpin int,secondpin int,game_id int not null, foreign key (game_id) references game_table(game_id));";
-		try{
-			Statement pstm1 = conn.createStatement();
-			Statement pstm2 = conn.createStatement();
-			pstm1.executeUpdate(sql1);
-			pstm2.executeUpdate(sql2);
-		}catch (Exception e){
+		String path = ClassLoader.getSystemResource("script/setup.sql").getPath();
+		System.out.println(path);
+		try (Connection conn = DBUtil.getConnection();
+				FileReader fr = new FileReader(new File(path))) {
+			RunScript.execute(conn, fr);
+		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("建表失败");
-		}*/
+		}
 	}
 
 
 
 	@After
 	public void after() {
-		/*String sql1="drop table game_table;";
-		String sql2="drop table turns_table;";
-		try{
-			Statement pstm1 = conn.createStatement();
-			Statement pstm2 = conn.createStatement();
-			pstm1.executeUpdate(sql1);
-			pstm2.executeUpdate(sql2);
-		}catch (Exception e){
-			e.printStackTrace();
-			System.out.println("删表失败");
-		}*/
-		try{
-			conn.close();
-		}catch (Exception e){
+		String path = ClassLoader.getSystemResource("script/clean.sql").getPath();
+		System.out.println(path);
+		try (Connection conn = DBUtil.getConnection();
+			 FileReader fr = new FileReader(new File(path))) {
+			RunScript.execute(conn, fr);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -74,9 +67,7 @@ public class DataAccessTest {
 	@Test
 	public void testSave() {
 		BowlingGame game = factory.getGame();
-		game.addScores(10, 10, 10, 10, 10, 10, 10, 10);
-		bowlingService.save(game);
-		game.addScores(5,5,5);
+		game.addScores(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
 		bowlingService.save(game);
 		GameEntity result = query(game.getEntity().getId());
 		assertEquals(game.getEntity().getId(), result.getId());
@@ -99,8 +90,8 @@ public class DataAccessTest {
 		
 		assertEquals(Integer.valueOf(1001), entity.getId());
 		assertEquals(Integer.valueOf(10), entity.getMaxTurn());
-		assertEquals(10, game.getTurns().length);
-		assertEquals(Integer.valueOf(245), game.getTotalScore());
+		assertEquals(12, game.getTurns().length);
+		assertEquals(Integer.valueOf(300), game.getTotalScore());
 	}
 	
 	//Prepared data in db.
