@@ -22,11 +22,12 @@ public class BowlingGameDaoImpl extends AbstractDao<BowlingGameEntity, BowlingGa
         if(null!=doLoad(entity.getId())){
             return;
         }
-        String sql="insert into game_table(game_id,maxTurn) values(?,?)";
+        String sql="insert into game_table(game_id,maxTurn,maxPin) values(?,?,?)";
         try {
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setObject(1, entity.getId());
             pstm.setObject(2, entity.getMaxTurn());
+            pstm.setObject(3, entity.getMaxPin());
             pstm.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -42,7 +43,7 @@ public class BowlingGameDaoImpl extends AbstractDao<BowlingGameEntity, BowlingGa
             pstm.setObject(1, id);
             ResultSet rs=pstm.executeQuery();
             while(rs.next()){
-                bowlingGameEntity=new BowlingGameEntityImpl(rs.getInt("maxTurn"));
+                bowlingGameEntity=new BowlingGameEntityImpl(id,rs.getInt("maxTurn"),rs.getInt("maxPin"));
                 bowlingGameEntity.setId(id);
             }
         }catch (Exception e){
@@ -53,22 +54,8 @@ public class BowlingGameDaoImpl extends AbstractDao<BowlingGameEntity, BowlingGa
 
     @Override
     protected BowlingGame doBuildDomain(BowlingGameEntity entity) {
-        String sql="select * from game_table where game_id=?";
-        BowlingGame bowlingGame=null;
-        if(entity==null){
-            return bowlingGame;
-        }
-        try{
-            PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setObject(1, entity.getId());
-            ResultSet rs=pstm.executeQuery();
-            while(rs.next()){
-                bowlingGame=new BowlingGameImpl(BowlingRuleImpl.getInstance(),rs.getInt("game_id"),entity);
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return bowlingGame;
+        BowlingGame game=new BowlingGameImpl(BowlingRuleImpl.getInstance(),entity);
+        return game;
     }
 
     @Override

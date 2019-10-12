@@ -84,6 +84,28 @@ public class DataAccessTest {
 			assertEquals(turnEntity.getSecondPin(), turnResult.getSecondPin());
 		}
 	}
+
+	//多次save load
+	@Test
+	public void testSave2() {
+		BowlingGame game = factory.getGame();
+		game.addScores(10, 10, 10);
+		bowlingService.save(game);
+		game=bowlingService.load(game.getEntity().getId());
+		game.addScores(10, 10, 10, 10, 10, 10, 10, 10, 10);
+		bowlingService.save(game);
+		GameEntity result = query(game.getEntity().getId());
+		assertEquals(game.getEntity().getId(), result.getId());
+		assertEquals(game.getEntity().getMaxTurn(), result.getMaxTurn());
+
+		for (BowlingTurn turn : game.getTurns()) {
+			BowlingTurnEntity turnEntity = turn.getEntity();
+			BowlingTurnEntity turnResult = query(turnEntity.getId());
+			assertEquals(turnEntity.getId(), turnResult.getId());
+			assertEquals(turnEntity.getFirstPin(), turnResult.getFirstPin());
+			assertEquals(turnEntity.getSecondPin(), turnResult.getSecondPin());
+		}
+	}
 	
 	//Prepared data in db.
 	@Test
@@ -118,8 +140,7 @@ public class DataAccessTest {
 			pstm.setObject(1, id);
 			ResultSet rs=pstm.executeQuery();
 			while(rs.next()){
-				bowlingGameEntity=new BowlingGameEntityImpl(rs.getInt("maxTurn"));
-				bowlingGameEntity.setId(id);
+				bowlingGameEntity=new BowlingGameEntityImpl(id,rs.getInt("maxTurn"),rs.getInt("maxPin"));
 			}
 		}catch (Exception e){
 			e.printStackTrace();

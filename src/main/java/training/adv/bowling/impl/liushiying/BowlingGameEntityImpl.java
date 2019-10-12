@@ -9,13 +9,12 @@ public class BowlingGameEntityImpl implements BowlingGameEntity {
 	private Integer maxTurn;
 	private Integer maxPin;
 
-	public BowlingGameEntityImpl(Integer maxTurn){
-		this.maxTurn=maxTurn;
-	}
 
-	public BowlingGameEntityImpl(Integer maxTurn,Integer maxPin){
-		this.maxPin=maxPin;
+
+	public BowlingGameEntityImpl(Integer id,Integer maxTurn,Integer maxPin){
 		this.maxTurn=maxTurn;
+		this.maxPin=maxPin;
+		this.id=id;
 	}
 	
 	@Override

@@ -16,7 +16,6 @@ import training.adv.bowling.api.TurnKey;
 
 public class BowlingRuleImpl implements BowlingRule {
 
-	//private Integer curGameID;
 
 	private static BowlingRuleImpl rule=new BowlingRuleImpl();
 	private BowlingRuleImpl(){
@@ -26,9 +25,6 @@ public class BowlingRuleImpl implements BowlingRule {
 		return rule;
 	}
 
-	/*public BowlingRuleImpl(Integer curGameID) {
-		this.curGameID = curGameID;
-	}*/
 
 	@Override
 	public Boolean isGameFinished(BowlingTurn[] allTurns) {
@@ -111,6 +107,7 @@ public class BowlingRuleImpl implements BowlingRule {
 			return existingTurns;
 		}
 
+
 		// ≤‚ ‘pins «∑Ò∫œ∑®
 		if (!isNewPinsAllowed(existingTurns, pins)) {
 			return existingTurns;
@@ -119,7 +116,7 @@ public class BowlingRuleImpl implements BowlingRule {
 		//List<BowlingTurn> turnList = (null == existingTurns) ? new ArrayList<>(): new ArrayList<>(Arrays.asList(existingTurns));
 		List<BowlingTurn> turnList = new ArrayList<>();
 		if(null == existingTurns) {
-			turnList.add(new BowlingTurnImpl(null, null));
+			turnList.add(new BowlingTurnImpl(new BowlingTurnEntityImpl()));
 		} else {
 			turnList.addAll(Arrays.asList(existingTurns));
 		}
@@ -128,22 +125,22 @@ public class BowlingRuleImpl implements BowlingRule {
 		for(Integer pin  : pins) {		
 			if(isFinish(lastTurn)) {
 				if(pin==getMaxPin()){
-					turnList.add(new BowlingTurnImpl(pin, 0));
+					turnList.add(new BowlingTurnImpl(new BowlingTurnEntityImpl(pin,0)));
 				}else{
-					lastTurn = new BowlingTurnImpl(pin, null);
+					lastTurn = new BowlingTurnImpl(new BowlingTurnEntityImpl(pin));
 					turnList.add(lastTurn);
 				}
 
 			} else {
 				if(null==lastTurn.getFirstPin()){
 					if(pin==getMaxPin()){
-						lastTurn=new BowlingTurnImpl(pin,0);
+						lastTurn=new BowlingTurnImpl(new BowlingTurnEntityImpl(pin,0));
 					}else {
-						lastTurn = new BowlingTurnImpl(pin, null);
+						lastTurn = new BowlingTurnImpl(new BowlingTurnEntityImpl(pin));
 					}
 				}else{
-					lastTurn=new BowlingTurnImpl(lastTurn.getFirstPin(),pin);
-				}
+					lastTurn=new BowlingTurnImpl(new BowlingTurnEntityImpl(lastTurn.getFirstPin(),pin));
+			}
 				turnList.remove(turnList.size()-1);
 				turnList.add(lastTurn);
 				//todo first pin or second pin

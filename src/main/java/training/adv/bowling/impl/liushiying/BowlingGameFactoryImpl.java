@@ -4,6 +4,7 @@ import java.util.Random;
 
 import training.adv.bowling.api.BowlingGame;
 import training.adv.bowling.api.BowlingGameFactory;
+import training.adv.bowling.api.BowlingRule;
 
 public class BowlingGameFactoryImpl implements BowlingGameFactory{
 
@@ -21,8 +22,8 @@ public class BowlingGameFactoryImpl implements BowlingGameFactory{
 	@Override
 	public BowlingGame getGame() {
 		//TODO:改成可扩展性
-		
-		BowlingGameImpl bowlingGameImpl=new BowlingGameImpl(BowlingRuleImpl.getInstance(),index);
+		BowlingRule rule=BowlingRuleImpl.getInstance();
+		BowlingGameImpl bowlingGameImpl=new BowlingGameImpl(rule,new BowlingGameEntityImpl(index,rule.getMaxTurn(),rule.getMaxPin()));
 		index++;
 		return bowlingGameImpl;
 	}

@@ -86,21 +86,8 @@ public class BowlingTurnDaoImpl extends AbstractBatchDao implements BowlingTurnD
 
     @Override
     protected BowlingTurn doBuildDomain(BowlingTurnEntity entity) {
-            String sql="select * from turns_table where turn_id=? and game_id=?";
-            BowlingTurn turn=null;
-            TurnKey turnKey=entity.getId();
-            try{
-                PreparedStatement pstm = conn.prepareStatement(sql);
-                pstm.setObject(1, turnKey.getId());
-                pstm.setObject(2, turnKey.getForeignId());
-                ResultSet rs=pstm.executeQuery();
-                while(rs.next()){
-                    turn=new BowlingTurnImpl(rs.getInt("firstpin"),rs.getInt("secondpin"));
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            return turn;
+        BowlingTurn turn=new BowlingTurnImpl(entity);
+        return turn;
     }
 
     @Override
