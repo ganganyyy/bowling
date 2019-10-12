@@ -220,7 +220,7 @@ public class BowlingRuleImpl implements BowlingRule {
 			j = second == null ? 1 : 0;
 		}
 		for (; j < newPins.length - 1; j++) {
-			if (newPins[j] != getMaxPin() && newPins[j] + newPins[j++] > getMaxPin()) {
+			if (newPins[j] != getMaxPin() && newPins[j] + newPins[++j] > getMaxPin()) {
 				return false;
 			}
 		}
